@@ -14,63 +14,59 @@ const Forecast = ({ data }) => {
   const forecastDays = WEEK_DAYS.slice(dayInAWeek, WEEK_DAYS.length).concat(WEEK_DAYS.slice(0, dayInAWeek));
 
   return (
-    <>
-      <label className="text-xl font-bold">Daily</label>
-      <Accordion allowZeroExpanded>
-        {data.list.slice(0, 7).map((item, idx) => (
-          <AccordionItem key={idx}>
-            <AccordionItemHeading>
-              <AccordionItemButton>
-                <div className="flex items-center bg-gray-100 rounded-lg h-10 my-2 px-5 cursor-pointer text-sm">
-                  <img
-                    src={`icons/${item.weather[0].icon}.png`}
-                    className="w-10"
-                    alt="weather"
-                  />
-                  <label className="flex-1 ml-4 font-semibold text-gray-800">
-                    {forecastDays[idx]}
-                  </label>
-                  <label className="flex-1 text-right mr-4 text-gray-600">
-                    {item.weather[0].description}
-                  </label>
-                  <label className="text-gray-500">
-                    {Math.round(item.main.temp_max)}°C / {Math.round(item.main.temp_min)}°C
-                  </label>
-                </div>
-              </AccordionItemButton>
-            </AccordionItemHeading>
-            <AccordionItemPanel>
-              <div className="grid grid-cols-2 gap-x-4 px-4 py-2">
-                <div className="flex justify-between items-center h-8">
-                  <label className="text-gray-500">Pressure:</label>
-                  <label className="text-gray-800">{item.main.pressure}</label>
-                </div>
-                <div className="flex justify-between items-center h-8">
-                  <label className="text-gray-500">Humidity:</label>
-                  <label className="text-gray-800">{item.main.humidity}</label>
-                </div>
-                <div className="flex justify-between items-center h-8">
-                  <label className="text-gray-500">Clouds:</label>
-                  <label className="text-gray-800">{item.clouds.all}%</label>
-                </div>
-                <div className="flex justify-between items-center h-8">
-                  <label className="text-gray-500">Wind speed:</label>
-                  <label className="text-gray-800">{item.wind.speed} m/s</label>
-                </div>
-                <div className="flex justify-between items-center h-8">
-                  <label className="text-gray-500">Sea level:</label>
-                  <label className="text-gray-800">{item.main.sea_level}m</label>
-                </div>
-                <div className="flex justify-between items-center h-8">
-                  <label className="text-gray-500">Feels like:</label>
-                  <label className="text-gray-800">{item.main.feels_like}°C</label>
-                </div>
+    <div className="max-w-md mx-auto mt-6">
+    <h2 className="text-xl font-bold text-center mb-4">Weekly Forecast</h2>
+    <Accordion allowZeroExpanded>
+      {data.list.slice(0, 7).map((item, idx) => (
+        <AccordionItem key={idx}>
+          <AccordionItemHeading>
+            <AccordionItemButton>
+              <div className="flex items-center bg-white rounded-lg shadow-md p-4 mb-2">
+                <img
+                  src={`icons/${item.weather[0].icon}.png`}
+                  className="w-12"
+                  alt="weather"
+                />
+                <span className="ml-4 text-gray-800 font-semibold flex-1">{forecastDays[idx]}</span>
+                <span className="text-gray-600">{item.weather[0].description}</span>
+                <span className="ml-4 text-gray-800 font-semibold">
+                  {Math.round(item.main.temp_max)}°C / {Math.round(item.main.temp_min)}°C
+                </span>
               </div>
-            </AccordionItemPanel>
-          </AccordionItem>
-        ))}
-      </Accordion>
-    </>
+            </AccordionItemButton>
+          </AccordionItemHeading>
+          <AccordionItemPanel>
+            <div className="grid grid-cols-2 gap-4 text-sm p-4 bg-gray-50 rounded-lg">
+              <div className="flex justify-between">
+                <span>Pressure:</span>
+                <span>{item.main.pressure} hPa</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Humidity:</span>
+                <span>{item.main.humidity}%</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Clouds:</span>
+                <span>{item.clouds.all}%</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Wind Speed:</span>
+                <span>{item.wind.speed} m/s</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Sea Level:</span>
+                <span>{item.main.sea_level}m</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Feels Like:</span>
+                <span>{item.main.feels_like}°C</span>
+              </div>
+            </div>
+          </AccordionItemPanel>
+        </AccordionItem>
+      ))}
+    </Accordion>
+  </div>
   );
 };
 

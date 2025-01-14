@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import AsyncSelect from "react-select/async";
-import { GeoApiOptions, GEO_API_URL } from "../../apis/Api.js";
+import React, { useState } from 'react';
+import AsyncSelect from 'react-select/async';
+import { GeoApiOptions, GEO_API_URL } from '../../apis/Api.js';
 
 const Search = ({ onSearchChange }) => {
   const [search, setSearch] = useState(null);
@@ -19,7 +19,7 @@ const Search = ({ onSearchChange }) => {
         }));
       })
       .catch((error) => {
-        console.error("Error fetching city data:", error);
+        console.error('Error fetching city data:', error);
         return [];
       });
   };
@@ -32,13 +32,23 @@ const Search = ({ onSearchChange }) => {
   };
 
   return (
-    <div>
+    <div className='p-4 max-w-md mx-auto'>
       <AsyncSelect
+        className='react-select-container'
+        classNamePrefix='react-select'
         cacheOptions
         loadOptions={loadOptions}
         defaultOptions
         onChange={handleOnChange}
-        placeholder="Search for a city..."
+        placeholder='Search for a city...'
+        styles={{
+          control: (base) => ({
+            ...base,
+            borderColor: '#508D4E',
+            boxShadow: 'none',
+            '&:hover': { borderColor: '#508D4E' },
+          }),
+        }}
       />
     </div>
   );

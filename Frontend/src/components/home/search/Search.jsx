@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import AsyncSelect from 'react-select/async';
-import { GeoApiOptions, GEO_API_URL } from '../../apis/Api.js';
+import { GeoApiOptions, GEO_API_URL } from '../../../apis/Api.js';
 
 const Search = ({ onSearchChange }) => {
   const [search, setSearch] = useState(null);

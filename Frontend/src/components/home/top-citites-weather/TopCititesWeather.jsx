@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { WEATHER_API_URL } from '../../apis/Api';
+import { WEATHER_API_URL } from '../../../apis/Api';
 
 const WeatherAPIKey = import.meta.env.VITE_WEATHER_API_KEY;
 

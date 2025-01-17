@@ -1,9 +1,9 @@
 import { useState, useCallback } from 'react';
-import Search from '../search/Search.jsx';
-import CurrentWeather from '../current-weather/CurrentWeather.jsx';
-import Forecast from '../forecast/Forecast.jsx';
+import Search from './search/Search.jsx';
+import CurrentWeather from './current-weather/CurrentWeather.jsx';
+import Forecast from './forecast/Forecast.jsx';
 import { WEATHER_API_URL } from '../../apis/Api.js';
-import TopCitiesWeather from '../top-citites-weather/TopCititesWeather.jsx';
+import TopCitiesWeather from './top-citites-weather/TopCititesWeather.jsx';
 
 const WeatherAPIKey = import.meta.env.VITE_WEATHER_API_KEY;
 

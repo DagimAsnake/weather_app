@@ -11,7 +11,7 @@ const CurrentWeather = ({ data }) => {
         <img
           alt="weather"
           className="w-20 h-20"
-          src={`icons/${data.weather[0].icon}.png`}
+          src={`https://openweathermap.org/img/wn/${data.weather?.[0]?.icon}@2x.png`}
         />
       </div>
       <div className="mt-6">

@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  addFavourite,
+  removeFavourite,
+  getFavourites
+} from '../../../state/favourite/favouriteSlice';
 import { WEATHER_API_URL } from '../../../apis/Api';
+import { BsFillHeartFill, BsHeart } from 'react-icons/bs';
 
 const WeatherAPIKey = import.meta.env.VITE_WEATHER_API_KEY;
 
@@ -18,6 +25,13 @@ const cities = [
 const TopCitiesWeather = () => {
   const [weatherData, setWeatherData] = useState([]);
   const [error, setError] = useState(null);
+
+  const favourites = useSelector((state) => state.favourite.list);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    dispatch(getFavourites());
+  }, [dispatch])
 
   useEffect(() => {
     const fetchCityWeather = async () => {
@@ -44,6 +58,20 @@ const TopCitiesWeather = () => {
 
     fetchCityWeather();
   }, []);
+
+  const isCityFavourite = (city) => {
+    return favourites.some(
+      (fav) => fav.city === city.name && fav.country === city.sys.country
+    );
+  };
+console.log(favourites)
+  const handleFavouriteToggle = (city) => {
+    if (isCityFavourite(city)) {
+      dispatch(removeFavourite({ city: city.name, country: city.sys.country }));
+    } else {
+      dispatch(addFavourite({ city: city.name, country: city.sys.country }));
+    }
+  };
 
   if (error) {
     return <p className='text-red-500 text-center'>{error}</p>;
@@ -103,6 +131,16 @@ const TopCitiesWeather = () => {
                   </span>
                 </div>
               </div>
+            </div>
+            <div
+              onClick={() => handleFavouriteToggle(cityWeather)}
+              className='cursor-pointer'
+            >
+              {isCityFavourite(cityWeather) ? (
+                <BsFillHeartFill className='text-red-500' size={30} />
+              ) : (
+                <BsHeart className='text-white' size={30} />
+              )}
             </div>
           </div>
         ))}

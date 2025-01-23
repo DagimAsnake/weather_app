@@ -3,10 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import {
   addFavourite,
   removeFavourite,
-  getFavourites
+  getFavourites,
 } from '../../../state/favourite/favouriteSlice';
 import { WEATHER_API_URL } from '../../../apis/Api';
 import { BsFillHeartFill, BsHeart } from 'react-icons/bs';
+import { ToastContainer, toast } from 'react-toastify';
 
 const WeatherAPIKey = import.meta.env.VITE_WEATHER_API_KEY;
 
@@ -26,12 +27,15 @@ const TopCitiesWeather = () => {
   const [weatherData, setWeatherData] = useState([]);
   const [error, setError] = useState(null);
 
+  const isAuthenticated = useSelector(
+    (state) => state.userAuth.isAuthenticated
+  );
   const favourites = useSelector((state) => state.favourite.list);
   const dispatch = useDispatch();
 
   useEffect(() => {
     dispatch(getFavourites());
-  }, [dispatch])
+  }, [dispatch]);
 
   useEffect(() => {
     const fetchCityWeather = async () => {
@@ -64,8 +68,13 @@ const TopCitiesWeather = () => {
       (fav) => fav.city === city.name && fav.country === city.sys.country
     );
   };
-console.log(favourites)
+
   const handleFavouriteToggle = (city) => {
+    if (!isAuthenticated) {
+      toast.warning('Please log in to manage your favourite locations!');
+      return;
+    }
+
     if (isCityFavourite(city)) {
       dispatch(removeFavourite({ city: city.name, country: city.sys.country }));
     } else {
@@ -78,74 +87,79 @@ console.log(favourites)
   }
 
   return (
-    <div className='container mx-auto mt-6'>
-      <h2 className='text-3xl font-bold text-center mb-5 text-black'>
-        Today's Weather in Top Cities
-      </h2>
-      <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
-        {weatherData.map((cityWeather, index) => (
-          <div
-            key={index}
-            className='w-full bg-black text-white rounded-xl shadow-lg p-6'
-          >
-            <div className='flex justify-between items-center'>
-              <div>
-                <h1 className='text-2xl font-bold'>{cityWeather.name}</h1>
-                <p className='text-sm capitalize'>
-                  {cityWeather.weather?.[0]?.description}
-                </p>
-              </div>
-              <img
-                alt='weather'
-                className='w-20 h-20'
-                src={`https://openweathermap.org/img/wn/${cityWeather.weather?.[0]?.icon}@2x.png`}
-              />
-            </div>
-            <div className='mt-6'>
-              <p className='text-6xl font-bold'>
-                {Math.round(cityWeather.main?.temp)}°C
-              </p>
-              <div className='mt-4 space-y-2'>
-                <div className='flex justify-between'>
-                  <span className='text-sm'>Feels like:</span>
-                  <span className='text-sm font-semibold'>
-                    {Math.round(cityWeather.main?.feels_like)}°C
-                  </span>
-                </div>
-                <div className='flex justify-between'>
-                  <span className='text-sm'>Wind:</span>
-                  <span className='text-sm font-semibold'>
-                    {cityWeather.wind?.speed} m/s
-                  </span>
-                </div>
-                <div className='flex justify-between'>
-                  <span className='text-sm'>Humidity:</span>
-                  <span className='text-sm font-semibold'>
-                    {cityWeather.main?.humidity}%
-                  </span>
-                </div>
-                <div className='flex justify-between'>
-                  <span className='text-sm'>Pressure:</span>
-                  <span className='text-sm font-semibold'>
-                    {cityWeather.main?.pressure} hPa
-                  </span>
-                </div>
-              </div>
-            </div>
+    <>
+      <ToastContainer position='top-right' autoClose={3000} hideProgressBar />
+      <div className='container mx-auto mt-6'>
+        <h2 className='text-3xl font-bold text-center mb-5 text-black'>
+          Today's Weather in Top Cities
+        </h2>
+        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6'>
+          {weatherData.map((cityWeather, index) => (
             <div
-              onClick={() => handleFavouriteToggle(cityWeather)}
-              className='cursor-pointer'
+              key={index}
+              className='w-full bg-black text-white rounded-xl shadow-lg p-6'
             >
-              {isCityFavourite(cityWeather) ? (
-                <BsFillHeartFill className='text-red-500' size={30} />
-              ) : (
-                <BsHeart className='text-white' size={30} />
-              )}
+              <div className='flex justify-between items-center'>
+                <div>
+                  <h1 className='text-2xl font-bold'>
+                    {cityWeather.name}, {cityWeather.sys.country}
+                  </h1>
+                  <p className='text-sm capitalize'>
+                    {cityWeather.weather?.[0]?.description}
+                  </p>
+                </div>
+                <img
+                  alt='weather'
+                  className='w-20 h-20'
+                  src={`https://openweathermap.org/img/wn/${cityWeather.weather?.[0]?.icon}@2x.png`}
+                />
+              </div>
+              <div className='mt-6'>
+                <p className='text-6xl font-bold'>
+                  {Math.round(cityWeather.main?.temp)}°C
+                </p>
+                <div className='mt-4 space-y-2'>
+                  <div className='flex justify-between'>
+                    <span className='text-sm'>Feels like:</span>
+                    <span className='text-sm font-semibold'>
+                      {Math.round(cityWeather.main?.feels_like)}°C
+                    </span>
+                  </div>
+                  <div className='flex justify-between'>
+                    <span className='text-sm'>Wind:</span>
+                    <span className='text-sm font-semibold'>
+                      {cityWeather.wind?.speed} m/s
+                    </span>
+                  </div>
+                  <div className='flex justify-between'>
+                    <span className='text-sm'>Humidity:</span>
+                    <span className='text-sm font-semibold'>
+                      {cityWeather.main?.humidity}%
+                    </span>
+                  </div>
+                  <div className='flex justify-between'>
+                    <span className='text-sm'>Pressure:</span>
+                    <span className='text-sm font-semibold'>
+                      {cityWeather.main?.pressure} hPa
+                    </span>
+                  </div>
+                </div>
+              </div>
+              <div
+                onClick={() => handleFavouriteToggle(cityWeather)}
+                className='cursor-pointer flex justify-center items-center mt-4'
+              >
+                {isCityFavourite(cityWeather) ? (
+                  <BsFillHeartFill className='text-red-500' size={30} />
+                ) : (
+                  <BsHeart className='text-white' size={30} />
+                )}
+              </div>
             </div>
-          </div>
-        ))}
+          ))}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 

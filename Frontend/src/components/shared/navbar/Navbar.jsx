@@ -3,16 +3,20 @@ import { Link } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { logout } from '../../../state/auth/userAuthSlice';
 import { FaBars, FaTimes } from 'react-icons/fa';
+import { useNavigate } from 'react-router-dom';
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate();
+
   const isAuthenticated = useSelector(
     (state) => state.userAuth.isAuthenticated
   );
 
   const handleLogout = () => {
     dispatch(logout());
+    navigate('/');
   };
 
   return (

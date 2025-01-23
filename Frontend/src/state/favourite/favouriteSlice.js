@@ -1,13 +1,19 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { logout } from '../auth/userAuthSlice';
 
 const baseUrl = import.meta.env.VITE_BASE_URL;
+const initialState = {
+  list: [],
+  loading: false,
+  error: null,
+};
 
 export const addFavourite = createAsyncThunk(
   'favourites/addFavourite',
   async ({ city, country }, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem('token');
       const response = await axios.post(
         `${baseUrl}/favourite`,
         { city, country },
@@ -28,7 +34,7 @@ export const getFavourites = createAsyncThunk(
   'favourites/getFavourites',
   async (_, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem('token');
       const response = await axios.get(`${baseUrl}/favourite`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -45,7 +51,7 @@ export const removeFavourite = createAsyncThunk(
   'favourites/removeFavourite',
   async ({ city, country }, { rejectWithValue }) => {
     try {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem('token');
       const response = await axios.delete(`${baseUrl}/favourite`, {
         headers: {
           Authorization: `Bearer ${token}`,
@@ -61,11 +67,7 @@ export const removeFavourite = createAsyncThunk(
 
 const favouritesSlice = createSlice({
   name: 'favourites',
-  initialState: {
-    list: [],
-    loading: false,
-    error: null,
-  },
+  initialState,
   reducers: {},
   extraReducers: (builder) => {
     builder
@@ -101,6 +103,9 @@ const favouritesSlice = createSlice({
       .addCase(removeFavourite.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
+      })
+      .addCase(logout, (state) => {
+        Object.assign(state, initialState);
       });
   },
 });

@@ -1,0 +1,196 @@
+paths:
+  /api/favourite:
+    post:
+      summary: Add a city to favourites
+      description: Adds a city to the user's list of favourite cities.
+      tags:
+        - Favourites
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                city:
+                  type: string
+                  example: Addis Ababa
+                country:
+                  type: string
+                  example: Ethiopia
+              required:
+                - city
+                - country
+      responses:
+        '200':
+          description: City added to favourites successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Favourite added successfully
+                  favourites:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        city:
+                          type: string
+                          example: Addis Ababa
+                        country:
+                          type: string
+                          example: Ethiopia
+        '404':
+          description: User not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User not found
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Failed to add city to favourites
+                  error:
+                    type: string
+                    example: Some error message
+
+    get:
+      summary: Fetch favourite cities
+      description: Retrieves the user's list of favourite cities.
+      tags:
+        - Favourites
+      responses:
+        '200':
+          description: Favourite cities fetched successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Favourite fetched successfully
+                  favourites:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        city:
+                          type: string
+                          example: Addis Ababa
+                        country:
+                          type: string
+                          example: Ethiopia
+        '404':
+          description: User not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User not found
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Failed to fetch favourites
+                  error:
+                    type: string
+                    example: Some error message
+
+    delete:
+      summary: Remove a city from favourites
+      description: Removes a city from the user's list of favourite cities.
+      tags:
+        - Favourites
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                city:
+                  type: string
+                  example: Addis Ababa
+                country:
+                  type: string
+                  example: Ethiopia
+              required:
+                - city
+                - country
+      responses:
+        '200':
+          description: City removed from favourites successfully.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Favourite removed successfully
+                  favourites:
+                    type: array
+                    items:
+                      type: object
+                      properties:
+                        city:
+                          type: string
+                          example: Addis Ababa
+                        country:
+                          type: string
+                          example: Ethiopia
+        '404':
+          description: User or favourite city not found.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: User not found
+        '400':
+          description: City is not in favourites.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: City is not in favourites
+        '500':
+          description: Internal Server Error.
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: string
+                    example: Failed to remove city from favourites
+                  error:
+                    type: string
+                    example: Some error message

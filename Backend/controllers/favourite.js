@@ -22,12 +22,10 @@ export const addToFavourites = async (req, res) => {
 
     const populatedUser = await User.findById(userId).populate('favourites');
 
-    res
-      .status(200)
-      .json({
-        message: 'Favourite add successfully',
-        favourites: populatedUser.favourites,
-      });
+    res.status(200).json({
+      message: 'Favourite add successfully',
+      favourites: populatedUser.favourites,
+    });
   } catch (err) {
     res.status(500).json({
       message: 'Failed to add city to favourites',

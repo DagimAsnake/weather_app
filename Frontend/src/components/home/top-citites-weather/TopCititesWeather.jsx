@@ -25,6 +25,7 @@ const cities = [
 
 const TopCitiesWeather = () => {
   const [weatherData, setWeatherData] = useState([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   const isAuthenticated = useSelector(
@@ -43,6 +44,7 @@ const TopCitiesWeather = () => {
         setError(
           'API key is missing. Please check your environment variables.'
         );
+        setLoading(false);
         return;
       }
 
@@ -57,6 +59,8 @@ const TopCitiesWeather = () => {
         setWeatherData(results);
       } catch (err) {
         setError('Failed to fetch weather data. Please try again.');
+      } finally {
+        setLoading(false);
       }
     };
 
@@ -81,6 +85,16 @@ const TopCitiesWeather = () => {
       dispatch(addFavourite({ city: city.name, country: city.sys.country }));
     }
   };
+
+  if (loading) {
+    return (
+      <div className='flex justify-center items-center'>
+        <div className='text-center'>
+          <div className='animate-spin rounded-full h-12 w-12 border-t-4 border-blue-500 border-opacity-75'></div>
+        </div>
+      </div>
+    );
+  }
 
   if (error) {
     return <p className='text-red-500 text-center'>{error}</p>;

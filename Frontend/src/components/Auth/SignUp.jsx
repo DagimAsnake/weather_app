@@ -1,7 +1,7 @@
 import React from 'react';
 import { FaUser, FaEnvelope, FaLock, FaEye, FaEyeSlash } from 'react-icons/fa';
 import { useState, useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, Link } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import { registerUser, resetData } from '../../state/auth/userAuthSlice';
 
@@ -156,6 +156,12 @@ const SignUp = () => {
             </div>
           )}
         </form>
+        <p className='text-center my-2'>
+          Already have an account?{' '}
+          <Link to='/login' className='hover:underline'>
+            Sign In
+          </Link>
+        </p>
       </div>
     </div>
   );
